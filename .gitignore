@@ -1,0 +1,14 @@
+.venv/
+.idea/
+.env
+_updates/
+_tests/
+__pycache__/
+jobradar/_uploads/
+jobradar/__pycache__/
+jobradar/profile.md
+*.pyc
+*.db
+*.sqlite
+jobradar.db
+user.json
