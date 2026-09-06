@@ -866,7 +866,7 @@ This document includes prompts for:
 
 # Contributing
 
-See **[CONTRIBUTING.md](CONTRIBUTING.md)** for the Git/Fork/Branch/Pull-Request workflow.
+See **[docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)** for the Git/Fork/Branch/Pull-Request workflow.
 
 Contributions are welcome, especially:
 
