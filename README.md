@@ -218,7 +218,7 @@ The existing installation workflow is deliberately simple. Yet, the following to
 Open a command prompt at the target location for the JobRadar installation and enter:
 
 ```bash
-git clone <JOBRADAR_REPOSITORY_URL>
+git clone https://github.com/Single-MAlt-td/JobRadar.git
 cd JobRadar
 ```
 
