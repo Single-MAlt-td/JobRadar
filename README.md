@@ -272,7 +272,7 @@ At minimum:
 - navigate through all Settings tabs to get an overview
 - in the Geo / Routing tab:
   - enter your home/base address (e.g. in the form: `road-name, ZIP-code location` (for data security, do not enter your house number; you could also choose another nearby and official address, since route calculation must not be accurate to the meter)),
-  - configure **ORS** for routing/geocoding if you want distance calculations (or leave defaults for initial testing),
+  - configure **ORS** for routing/geocoding if you want distance calculations (see [docs/ROUTING.md](docs/ROUTING.md) or leave defaults for initial testing),
 - in the AI tab:
   - configure **AI** (see [AI setup and usage](#ai-setup-and-usage)) if you want to use Screening, Deep Screening, Ask AI or the AI Agent.
   - use the example profile or create your own one (see [Personal AI profile](#personal-ai-profile))
@@ -284,7 +284,7 @@ At minimum:
 
 ## 2. Run your first BA search
 
-Leave the source set to **BA**.
+Leave the source set to **BA** (there aren't any other options available right now anyway).
 
 Enter:
 
@@ -308,7 +308,11 @@ Route/Location → Calculate route (location)
 
 If routing is configured correctly, JobRadar should update the route distance and estimated travel time for that job.
 
-> 💡 For first tests, if ORS is not set up, start with only one or a few jobs.
+> ⚠️ But note that the computed distance is calculated only from your home address to the target city! But:
+> 
+> 💡 Note that BA search results usually contain an exact address or geo coordinates of the work location. To calculate a precise route to this location, choose `Route/Location → Calculate route (exact address)` instead. The exact route calculation should only be needed for jobs that particularly interest you. Exact addresses for manually added entries can currently not be entered, since they must be found out manually via GoogleMaps (or similar) anyway. 
+
+> 💡 For first tests, if ORS is not set up, start with only one or a few jobs to test the route calculation.
 
 > ℹ️ Sometimes routing fails, mostly due to malformed target addresses. By choosing **Set alias** from the **Routing / Location** context menu, you can override it with a well-formed address and try again. 
 
@@ -406,7 +410,7 @@ You are now back in the normal table view.
 The main table:
 
 - supports multi-select via:
-  - **Ctrl key and **left mouse button**
+  - **Ctrl** key and **left mouse button**
   - **Shift** key and **left mouse button**
   - **Ctrl+A** to select all
 - allows to perform many context menu options for multiple selected jobs at once
@@ -414,7 +418,7 @@ The main table:
 - lets you erase entries with **Del** key 
 >💡 Unsaved jobs marked as `new*` can re-appear in a new search when you just delete them from the list. To be filtered out, they must be rejected and thereby stored in the database.
 
-> ℹ️ To delete ALL unsaved `new*` jobs from the table, you can click the **Clear new*** button
+> ℹ️ To delete ALL unsaved `new*` jobs from the table, you can click the **Clear new*** button. This is useful if the search result delivers entirely unwanted entries due to a misspelled or test query.
 
 ---
 
@@ -558,16 +562,6 @@ Then:
 
 # Documentation
 
-## List Import
-
-JobRadar can import manually copied result lists, for example from LinkedIn or Indeed.
-
-A dedicated screenshot-based guide can be found here:
-
-**[docs/LIST_IMPORT_LINKEDIN.md](docs/LIST_IMPORT_LINKEDIN.md)**
-
----
-
 ## AI setup and usage
 
 > ⚠️ **Commercial AI APIs cost real money.**
@@ -592,6 +586,23 @@ Current choices:
 The profile itself can be written in either language. The selected output language is explicitly included in the AI prompts, so changing the profile language alone does **not** determine the output language.
 
 Other providers such as Anthropic Claude or Google Gemini are not currently supported out of the box.
+
+### Adding AI models
+
+Click the **Add** button to open the dialog for adding a model:
+
+![docs/images/ai-model-add.png](docs/images/ai-model-add.png)
+
+- Choose the Provider from the list (currently only `openai, mistral, ollama` are available)
+- Enter the name of the model from the chosen provider you like to add (e.g. `gpt-5`)
+- Enter a display name, which is shown in JobRadar as alias for the model name (e.g. `OpenAI GPT-5`)
+- Enter the name of the environment variable that holds the API key for the chosen provider
+- Check the provider docs in case the pre-filled base URL is outdated and adapt it accordingly
+- If you know the model supports web-search, activate the last checkbox (only tested with OpenAI)
+- Click **OK** to add the model to the list in the settings
+
+> 💡 In JobRadar you can always choose which model to use for an AI action from a dropdown list (except for job description re-formatting). To not bother about that, you can right-click a list entry and set the selected model as default for certain actions. It is recommended to use cheaper models for easy tasks like job description re-formatting, shallow screening and list import. Use heavier models for important tasks like deep screening and chatting. 
+
 
 ### Maintainer recommendation
 
@@ -710,7 +721,7 @@ Right-click the **job-description text area** and choose the reformat action (it
 
 This is separate from the main-table context menu.
 
-💡 **Recommendation:** Use a relatively inexpensive model for reformatting. This task generally does not require your strongest reasoning model.
+> 💡 **Recommendation:** Use a relatively inexpensive model for reformatting. This task generally does not require your strongest reasoning model.
 
 The maintainer currently uses:
 
@@ -718,7 +729,7 @@ The maintainer currently uses:
 mistral-medium-latest
 ```
 
-Treat this as an example only; model names, quality and pricing can change.
+Treat this as an example only! Model names, quality and pricing can change.
 
 ---
 
@@ -729,6 +740,16 @@ The AI Agent can autonomously perform broader job-search workflows and evaluate 
 > ⚠️ **The Agent may independently trigger Deep Screenings. This can make an Agent run noticeably more expensive than ordinary Screening.**
 
 As a rough anecdotal example, the maintainer has seen Agent runs involving roughly 20 searches plus evaluations cost around **€1 per run**. This is not a price guarantee: actual cost depends heavily on models, prompt sizes and the number of Deep Screenings.
+
+---
+
+## List Import
+
+JobRadar can import manually copied result lists, for example from LinkedIn or Indeed.
+
+A dedicated screenshot-based guide can be found here:
+
+**[docs/LIST_IMPORT_LINKEDIN.md](docs/LIST_IMPORT_LINKEDIN.md)**
 
 ---
 
@@ -789,6 +810,8 @@ JobRadar currently contains adapters for systems including:
 Support is incomplete. Career sites change, customer-specific implementations vary, and some sites block automated HTTP requests.
 
 Use **Diagnose career source** when an adapter fails.
+
+> ⚠️ Note that executing a company watch run may spam your main table! Unfortunately, to ensure irrelevant jobs are not shown again in another run, you must reject all unfitting jobs! This can be annoying for large companies which offer hundreds of jobs, but it must only be done once.
 
 ---
 
